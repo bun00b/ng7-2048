@@ -1,5 +1,20 @@
-<mat-grid-list cols="4" gutterSize="4" rowHeight="200px">
-  <mat-grid-tile *ngFor="let tile of tiles" colspan="1" rowspan="1" [style.background]="'#' + tile % 255 + tile % 255 + tile % 255">
-    <div class="text">{{ tile }}</div>
-  </mat-grid-tile>
-</mat-grid-list>
+<mat-toolbar color="warn">
+  <mat-toolbar-row>
+    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #drawer mode="side" opened role="navigation">
+    <input matInput type="number" name="cols" id="cols" placeholder="Size" [(ngModel)]="cols">
+    <button mat-raised-button color="primary" (click)="startGame();">Start game</button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-grid-list class="grid" [cols]="columns" gutterSize="4" [rowHeight]="((800 - 4 * columns) / columns) + 'px'">
+      <mat-grid-tile *ngFor="let tile of tiles" colspan="1" rowspan="1" [style.background]="'#' + tile * 10 % 255 + tile * 10 % 255 + tile * 10 % 255">
+        <div class="text">{{ tile }}</div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-sidenav-content>
+</mat-sidenav-container>

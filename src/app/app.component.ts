@@ -7,16 +7,15 @@ import * as _ from "lodash";
   styleUrls: ["./app.component.sass"]
 })
 export class AppComponent {
-  tiles: number[] = new Array(16);
+  cols = 4;
+  columns = 4;
+  tiles: number[] = [];
   gameOver = false;
 
-  constructor() {
-    this.startGame();
-  }
-
   startGame() {
-    this.tiles = new Array(16);
-    this.tiles[Math.floor(Math.random() * 16)] = 2;
+    this.columns = this.cols;
+    this.tiles = new Array(Math.pow(this.cols, 2));
+    this.tiles[Math.floor(Math.random() * Math.pow(this.cols, 2))] = 2;
     this.gameOver = false;
   }
 
@@ -35,6 +34,7 @@ export class AppComponent {
     const isVertical = input === 2 || input === 8;
     let skipNext = false;
     let whileLoop = true;
+    // possible new appearing numbers are any numbers currently on screen
     const possibleNewNumbers = [...Array.from(new Set(this.tiles))].filter(function (el) {
       return el !== null && el !== undefined;
     });
@@ -43,7 +43,7 @@ export class AppComponent {
     let rows: number[][] = [];
     let newRows: number[][] = [];
     while (this.tiles.length > 0) {
-      rows.push(this.tiles.splice(0, 4));
+      rows.push(this.tiles.splice(0, this.cols));
     }
     if (isVertical) {
       // transpose matrix and use same logic as horizontal move
@@ -70,7 +70,7 @@ export class AppComponent {
           skipNext = false;
         }
       }
-      while (newRow.length < 4) {
+      while (newRow.length < this.cols) {
         newRow.push(null);
       }
       input === 4 || input === 8 ? newRows.push(newRow) : newRows.push(newRow.reverse());
@@ -78,13 +78,13 @@ export class AppComponent {
     // code for generating new tile on the right
     const sideCol: number[] = [];
     // if move left: col is right so index 3, else col is left so index 0
-    const indexToUse: number = input === 4 || input === 8 ? 3 : 0;
+    const indexToUse: number = input === 4 || input === 8 ? this.cols - 1 : 0;
     _.each(newRows, row => {
       sideCol.push(row[indexToUse]);
     });
     if (_.indexOf(sideCol, null) > -1) {
       while (whileLoop) {
-        const randRow: number = Math.floor(Math.random() * 4);
+        const randRow: number = Math.floor(Math.random() * this.cols);
         if (newRows[randRow][indexToUse] === null) {
           newRows[randRow][indexToUse] = _.sample(possibleNewNumbers);
           whileLoop = false;
