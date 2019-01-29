@@ -1,5 +1,5 @@
 <mat-grid-list cols="4" gutterSize="4" rowHeight="200px">
   <mat-grid-tile *ngFor="let tile of tiles" colspan="1" rowspan="1" [style.background]="'#' + tile % 255 + tile % 255 + tile % 255">
-    <div class="text">{{ tile }}</div>
+    <div class="text">{{ tile || "null" }}</div>
   </mat-grid-tile>
 </mat-grid-list>

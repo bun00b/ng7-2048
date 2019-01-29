@@ -35,7 +35,10 @@ export class AppComponent {
     let whileLoop = true;
     const rows: number[][] = [];
     const newRows: number[][] = [];
-    const possibleNewNumbers = [...Array.from(new Set(this.tiles))];
+    const possibleNewNumbers = [...Array.from(new Set(this.tiles))].filter(function (el) {
+      return el !== null && el !== undefined;
+    });
+
     while (this.tiles.length > 0) {
       rows.push(this.tiles.splice(0, 4));
     }
@@ -86,9 +89,10 @@ export class AppComponent {
         this.tiles = [].concat(...newRows);
         break;
       case 6:
+        // code to move everything to the right while adding
         rows.forEach(row => {
           row = row.filter(function (el) {
-            return el != null;
+            return el !== null;
           }).reverse();
           const newRow: number[] = [];
           for (let index = 0; index < row.length; index++) {
