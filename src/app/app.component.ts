@@ -9,10 +9,13 @@ import * as _ from "lodash";
 export class AppComponent {
   cols = 4;
   columns = 4;
+  difficulty = 11;
+  colors: string[] = [];
   tiles: number[] = [];
   gameOver = false;
 
   startGame() {
+    this.initColors();
     this.columns = this.cols;
     this.tiles = new Array(Math.pow(this.cols, 2));
     this.tiles[Math.floor(Math.random() * Math.pow(this.cols, 2))] = 2;
@@ -106,10 +109,22 @@ export class AppComponent {
         this.startGame();
       }
     }
-    if (_.find(this.tiles, t => t === 2048)) {
+    if (_.find(this.tiles, t => t === Math.pow(2, this.difficulty))) {
       if (confirm("You won! Play again?")) {
         this.startGame();
       }
+    }
+  }
+
+  initColors() {
+    this.colors = Array.from("".repeat(Math.pow(2, this.difficulty)));
+    for (let i = 1; i < this.difficulty + 1; i++) {
+      let colorString = "#";
+
+      for (let j = 0; j < 3; j++) {
+        colorString += (Math.floor(Math.random() * 240) + 15).toString(16);
+      }
+      this.colors[Math.pow(2, i)] = colorString;
     }
   }
 }
