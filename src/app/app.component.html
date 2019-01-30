@@ -5,16 +5,26 @@
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container>
   <mat-sidenav #drawer mode="side" opened role="navigation">
-    <input matInput type="number" name="cols" id="cols" placeholder="Size" [(ngModel)]="cols">
+    <p>
+      <label for="cols">Grid size: {{ cols + "x" + cols }}</label>
+      <input matInput type="number" name="cols" id="cols" placeholder="Size" [(ngModel)]="cols">
+    </p>
+    <p>
+      <label for="difficulty">Goal: {{ difficulty | power }}</label>
+      <input matInput type="number" name="difficulty" id="difficulty" placeholder="Difficulty" [(ngModel)]="difficulty">
+    </p>
     <button mat-raised-button color="primary" (click)="startGame();">Start game</button>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-grid-list class="grid" [cols]="columns" gutterSize="4" [rowHeight]="((800 - 4 * columns) / columns) + 'px'">
-      <mat-grid-tile *ngFor="let tile of tiles" colspan="1" rowspan="1" [style.background]="'#' + tile * 10 % 255 + tile * 10 % 255 + tile * 10 % 255">
+    <mat-grid-list class="grid" [cols]="columns" gutterSize="4" [rowHeight]="((800 - 4 * columns) / columns)" *ngIf="tiles.length > 0; else noTiles">
+      <mat-grid-tile *ngFor="let tile of tiles" colspan="1" rowspan="1" [style.background]="colors[tile]">
         <div class="text">{{ tile }}</div>
       </mat-grid-tile>
     </mat-grid-list>
+    <ng-template #noTiles>
+      <h1>Waiting to start game</h1>
+    </ng-template>
   </mat-sidenav-content>
 </mat-sidenav-container>
